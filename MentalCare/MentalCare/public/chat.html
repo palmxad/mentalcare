@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ห้องแชท </title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="chat-container">
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="header-left">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <div class="user-info">
+          <div class="user-details">
+            <span class="username">ผู้ใช้ไม่ระบุชื่อ</span>
+            <span class="status" id="status">กำลังจับคู่...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages Area -->
+    <div class="messages-container" id="messages">
+      <!-- Messages will be populated here -->
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-container" id="chat" style="display:none;">
+      <div class="input-wrapper">
+        <input id="msgInput" type="text" placeholder="ส่งข้อความ..." maxlength="1000" />
+        <button class="send-btn" onclick="sendMsg()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Waiting Screen -->
+    <div class="waiting-screen" id="waiting-screen">
+      <div class="waiting-content">
+        <div class="loading-spinner"></div>
+        <h3>กำลังค้นหาผู้ใช้...</h3>
+        <p>รอสักครู่ เราจะจับคู่คุณกับผู้ใช้คนอื่น</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

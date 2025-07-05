@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>แบบทดสอบอารมณ์ 45 ข้อ</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    select { margin-bottom: 15px; }
+    .question { margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <h2>แบบทดสอบอารมณ์ 45 ข้อ</h2>
+  <form id="quizForm"></form>
+  <button onclick="submitQuiz()">ดูผลลัพธ์</button>
+  <div id="result" style="margin-top:20px;"></div>
+
+  <script>
+    const questions = [
+      "รู้สึกเบื่อหน่าย",
+      "ไม่มีความสุขกับสิ่งที่เคยชอบ",
+      "นอนไม่หลับหรือหลับมากไป",
+      "รู้สึกผิดหรือไร้ค่า",
+      "รู้สึกเหนื่อยง่าย",
+      "รู้สึกไร้ประโยชน์",
+      "ไม่มีสมาธิ",
+      "เคลื่อนไหวช้าลงหรือกระวนกระวาย",
+      "มีความคิดทำร้ายตัวเอง",
+      "วิตกกังวลตลอดเวลา",
+      "รู้สึกตื่นตระหนก",
+      "หายใจเร็วหรือหายใจไม่ออก",
+      "มือสั่น ใจสั่น",
+      "รู้สึกร้อนวูบวาบ เหงื่อออก",
+      "ปวดหัว เจ็บหน้าอก",
+      "รู้สึกสิ้นหวัง",
+      "รู้สึกโดดเดี่ยว",
+      "ไม่อยากคุยกับใคร",
+      "มีปัญหากับคนรอบตัว",
+      "รู้สึกว่าควบคุมชีวิตตัวเองไม่ได้",
+      "กลัวการออกไปข้างนอก",
+      "ระแวงคนอื่น",
+      "โกรธง่าย",
+      "หงุดหงิดบ่อย",
+      "ร้องไห้โดยไม่มีสาเหตุ",
+      "รู้สึกชีวิตไม่มีเป้าหมาย",
+      "นึกถึงความผิดพลาดในอดีตตลอด",
+      "กลัวอนาคต",
+      "ไม่มีแรงบันดาลใจ",
+      "หมดศรัทธาในตัวเอง",
+      "รู้สึกไม่มีใครเข้าใจ",
+      "ไม่อยากกินข้าว หรือกินมากเกินไป",
+      "น้ำหนักลดลงหรือเพิ่มขึ้นผิดปกติ",
+      "ฝันร้ายหรือสะดุ้งกลางคืน",
+      "คิดวนในหัวไม่หยุด",
+      "เจ็บป่วยบ่อย",
+      "เบื่องานหรือการเรียน",
+      "มีพฤติกรรมหลีกเลี่ยงความจริง",
+      "รู้สึกช้า อืดอาด",
+      "อยากหนีไปที่ไหนสักแห่ง",
+      "เปรียบเทียบตัวเองกับคนอื่น",
+      "โทษตัวเองเสมอ",
+      "คิดว่าไม่มีทางออก",
+      "รู้สึกไม่มั่นคงในชีวิต",
+      "ไม่อยากตื่นนอน"
+    ];
+
+    const form = document.getElementById("quizForm");
+
+    // สร้างคำถามในฟอร์ม
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `
+        <label>ข้อ ${i + 1}: ${q}</label><br>
+        <select name="q${i + 1}" required>
+          <option value="">-- เลือก --</option>
+          <option value="0">0 - ไม่เลย</option>
+          <option value="1">1 - บางครั้ง</option>
+          <option value="2">2 - บ่อยครั้ง</option>
+          <option value="3">3 - เกือบทุกวัน</option>
+        </select>
+      `;
+      form.appendChild(div);
+    });
+
+    // คำนวณผลรวม
+    function submitQuiz() {
+      const formData = new FormData(form);
+      let total = 0;
+      for (const value of formData.values()) {
+        total += parseInt(value);
+      }
+
+      let level = "";
+      if (total <= 30) level = "อารมณ์อยู่ในเกณฑ์ปกติ";
+      else if (total <= 60) level = "เริ่มมีภาวะอารมณ์แปรปรวน";
+      else if (total <= 90) level = "ภาวะซึมเศร้าระดับปานกลาง";
+      else level = "ควรพบผู้เชี่ยวชาญทันที";
+
+      document.getElementById("result").innerHTML =
+        `<h3>คะแนนรวม: ${total}</h3><p><strong>${level}</strong></p>`;
+    }
+  </script>
+</body>
+</html>
