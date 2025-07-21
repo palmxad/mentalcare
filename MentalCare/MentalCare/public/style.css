@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@100;200;300;400;500&family=Mitr:wght@200;300;400&display=swap');
 
 body {
-  font-family: 'Kanit', 'Sarabun', 'Prompt', sans-serif;
+  font-family: 'Prompt', 'Mitr', sans-serif;
+  font-weight: 200;
   text-align: center;
   padding: 30px;
   background-color: #f0f8ff;
@@ -9,6 +10,7 @@ body {
 
 h1, h2 {
   color: #2c3e50;
+  font-weight: 300;
 }
 
 .button {
@@ -19,6 +21,7 @@ h1, h2 {
   color: white;
   text-decoration: none;
   border-radius: 8px;
+  font-weight: 300;
 }
 
 /* Chat Container */
@@ -95,7 +98,7 @@ h1, h2 {
 }
 
 .username {
-  font-weight: 600;
+  font-weight: 300;
   font-size: 16px;
   color: #262626;
 }
@@ -104,6 +107,7 @@ h1, h2 {
   font-size: 12px;
   color: #8e8e8e;
   text-align: left;
+  font-weight: 200;
 }
 
 /* Messages Container */
@@ -125,6 +129,7 @@ h1, h2 {
   line-height: 1.4;
   word-wrap: break-word;
   position: relative;
+  font-weight: 300;
 }
 
 .message.sent {
@@ -147,6 +152,7 @@ h1, h2 {
   color: #8e8e8e;
   margin-top: 4px;
   text-align: right;
+  font-weight: 200;
 }
 
 .message.received .message-time {
@@ -176,12 +182,14 @@ h1, h2 {
   outline: none;
   padding: 8px 12px;
   font-size: 14px;
-  font-family: inherit;
+  font-family: 'Prompt', 'Mitr', sans-serif;
+  font-weight: 300;
   color: #262626;
 }
 
 #msgInput::placeholder {
   color: #8e8e8e;
+  font-weight: 200;
 }
 
 .send-btn {
@@ -244,12 +252,14 @@ h1, h2 {
   margin: 0 0 8px 0;
   color: #262626;
   font-size: 18px;
+  font-weight: 300;
 }
 
 .waiting-content p {
   margin: 0;
   color: #8e8e8e;
   font-size: 14px;
+  font-weight: 200;
 }
 
 /* Mobile Responsiveness */
@@ -258,7 +268,7 @@ h1, h2 {
     max-width: 100%;
     height: 100vh;
   }
-  
+
   .message {
     max-width: 85%;
   }
@@ -280,4 +290,179 @@ h1, h2 {
 
 .messages-container::-webkit-scrollbar-thumb:hover {
   background: #a0a0a0;
+}
+
+/* ===== RESET & FONT ===== */
+* {
+  box-sizing: border-box;
+  font-family: 'Prompt', 'Mitr', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f0f6fb;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== กล่องแชทหลัก ===== */
+.chat-container {
+  width: 100%;
+  max-width: 500px;
+  height: 90vh;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d6eaf8;
+}
+
+/* ===== ส่วนหัว ===== */
+.chat-header {
+  background-color: #e3f2fd;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #d6eaf8;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  margin-right: 12px;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.back-btn svg {
+  stroke: #007bff;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: 300;
+  font-size: 1rem;
+  color: #1a237e;
+}
+
+.status {
+  font-size: 0.85rem;
+  color: #5c6bc0;
+  font-weight: 200;
+}
+
+/* ===== พื้นที่ข้อความแชท ===== */
+.messages-container {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background-color: #f9fcff;
+}
+
+/* ===== กล่องพิมพ์ข้อความ ===== */
+.input-container {
+  padding: 12px;
+  background-color: #ffffff;
+  border-top: 1px solid #d6eaf8;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-wrapper input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 25px;
+  border: 1px solid #cce4f6;
+  background-color: #fefeff;
+  font-size: 1rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-wrapper input:focus {
+  border-color: #007bff;
+}
+
+.input-wrapper input::placeholder {
+  font-weight: 200;
+}
+
+/* ===== ปุ่มส่งแบบกลม Minimal ===== */
+.send-btn {
+  background-color: #007bff;
+  border: none;
+  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.send-btn svg {
+  stroke: white;
+}
+
+.send-btn:hover {
+  background-color: #0056b3;
+}
+
+/* ===== หน้ารอจับคู่ ===== */
+.waiting-screen {
+  flex: 1;
+  background-color: #f9fcff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #cce5ff;
+  border-top-color: #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Responsive ===== */
+@media screen and (max-width: 480px) {
+  .chat-container {
+    border-radius: 0;
+    height: 100vh;
+  }
+
+  .input-wrapper input {
+    font-size: 0.9rem;
+  }
+
+  .send-btn {
+    width: 42px;
+    height: 42px;
+  }
 }
