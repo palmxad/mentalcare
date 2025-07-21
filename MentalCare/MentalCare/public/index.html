@@ -1,19 +1,345 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>เว็บไซต์ช่วยเหลือใจ</title>
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* พื้นหลังมีชิ้นส่วนลอยๆ */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 70%),
+        radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 500px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .logo::before {
+      content: '💙';
+      font-size: 48px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #718096;
+      margin-bottom: 32px;
+      font-weight: 300;
+    }
+
+    .welcome-image {
+      width: 100%;
+      max-width: 280px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .welcome-image:hover {
+      transform: translateY(-4px);
+    }
+
+    .menu {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-decoration: none;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .menu-item:hover::before {
+      left: 100%;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    .menu-item:active {
+      transform: translateY(0);
+    }
+
+    .menu-icon {
+      font-size: 1.5rem;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+    }
+
+    .menu-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .footer-text {
+      font-size: 0.9rem;
+      color: #a0aec0;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .version-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #667eea;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 24px;
+        border-radius: 20px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .logo {
+        width: 100px;
+        height: 100px;
+      }
+
+      .logo::before {
+        font-size: 40px;
+      }
+
+      .welcome-image {
+        max-width: 240px;
+        height: 150px;
+      }
+
+      .menu-item {
+        padding: 16px;
+        font-size: 1rem;
+      }
+
+      .menu-icon {
+        font-size: 1.3rem;
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+      }
+
+      .welcome-image {
+        max-width: 200px;
+        height: 120px;
+      }
+
+      .menu-item {
+        padding: 14px;
+        font-size: 0.95rem;
+      }
+
+      .footer-text {
+        font-size: 0.8rem;
+      }
+    }
+
+    /* แอนิเมชันเมื่อโหลดหน้า */
+    .container {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .menu-item:nth-child(1) {
+      animation: slideInLeft 0.6s ease-out 0.2s both;
+    }
+
+    .menu-item:nth-child(2) {
+      animation: slideInRight 0.6s ease-out 0.4s both;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>ยินดีต้อนรับสู่เซฟโซนของคุณ 💙</h1>
-  <h2>version demo </h2>
-<img src="https://cms.dmpcdn.com/musicarticle/2024/11/01/b8742b00-9819-11ef-a31d-75d0ea4e72e6_webp_original.webp" style="width:200px; margin: 20px;">
-  <div class="menu">
-    <a href="quiz.html" class="button">📝 ทำแบบทดสอบ</a>
-    <a href="chat.html" class="button">💬 เข้าระบบแชท</a>
-  </div>
+  <div class="container">
+    <div class="version-badge">Demo</div>
 
-  <p style="text-align:center;">ไม่เปิดเผยตัวตน ปลอดภัย และไม่มีค่าใช้จ่าย</p>
+    <div class="logo"></div>
+
+    <h1>ยินดีต้อนรับสู่พื้นที่ปลอดภัย</h1>
+    <p class="subtitle">เราเข้าใจและพร้อมช่วยเหลือคุณ</p>
+
+    <img src="https://cms.dmpcdn.com/musicarticle/2024/11/01/b8742b00-9819-11ef-a31d-75d0ea4e72e6_webp_original.webp" 
+         alt="welcome image" 
+         class="welcome-image">
+
+    <div class="menu">
+      <a href="quiz.html" class="menu-item">
+        <div class="menu-icon">📝</div>
+        <div class="menu-text">ทำแบบทดสอบอารมณ์</div>
+      </a>
+      <a href="chat.html" class="menu-item">
+        <div class="menu-icon">💬</div>
+        <div class="menu-text">เข้าระบบแชทแบบไม่เปิดเผยตัวตน</div>
+      </a>
+    </div>
+
+    <p class="footer-text">
+      ปลอดภัย • ไม่เปิดเผยตัวตน • ไม่มีค่าใช้จ่าย<br>
+      เราอยู่ที่นี่เพื่อรับฟังและช่วยเหลือคุณ
+    </p>
+  </div>
 </body>
 </html>
