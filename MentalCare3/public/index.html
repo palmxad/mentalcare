@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>เว็บไซต์ช่วยเหลือใจ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #8ADEFF 0%, #DEFF8A 100%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* พื้นหลังมีชิ้นส่วนลอยๆ */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 70%),
+        radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 480px;
+      width: 100%;
+      height: 95vh;
+      max-height: 700px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .header-section {
+      flex-shrink: 0;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #8ADEFF, #FFAB8A);
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .logo::before {
+      content: '❤️‍🩹';
+      font-size: 32px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #0075A3, #AB8AFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #718096;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    .main-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .welcome-image {
+      width: 100%;
+      max-width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .welcome-image:hover {
+      transform: translateY(-4px); 
+    }
+
+    .menu {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: linear-gradient(135deg, #38B26F,#8ADEFF);
+      color: white;
+      text-decoration: none;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .menu-item:hover::before {
+      left: 100%;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    }
+
+    .menu-item:active {
+      transform: translateY(0);
+    }
+
+    .menu-icon {
+      font-size: 1.3rem;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+    }
+
+    .menu-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .bottom-section {
+      flex-shrink: 0;
+    }
+
+    .feedback-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #ADADAD, #ADADAD);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(56, 178, 172, 0.3);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .feedback-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .feedback-btn:hover::before {
+      left: 100%;
+    }
+
+    .feedback-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(56, 178, 172, 0.4);
+    }
+
+    .feedback-btn:active {
+      transform: translateY(0);
+    }
+
+    .feedback-icon {
+      margin-right: 8px;
+      font-size: 1.1rem;
+    }
+
+    .footer-text {
+      font-size: 0.8rem;
+      color: #a0aec0;
+      line-height: 1.4;
+      font-weight: 300;
+    }
+
+    .version-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #667eea;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 24px;
+        height: 98vh;
+        max-height: 650px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+
+      .logo::before {
+        font-size: 28px;
+      }
+
+      .welcome-image {
+        max-width: 180px;
+        height: 120px;
+      }
+
+      .menu-item {
+        padding: 14px;
+        font-size: 0.9rem;
+      }
+
+      .menu-icon {
+        font-size: 1.2rem;
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 20px;
+        height: 98vh;
+        max-height: 600px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+
+      .subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 16px;
+      }
+
+      .logo {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 12px;
+      }
+
+      .logo::before {
+        font-size: 24px;
+      }
+
+      .welcome-image {
+        max-width: 160px;
+        height: 100px;
+        margin-bottom: 16px;
+      }
+
+      .menu-item {
+        padding: 12px;
+        font-size: 0.85rem;
+      }
+
+      .menu-icon {
+        font-size: 1.1rem;
+        width: 22px;
+        height: 22px;
+      }
+
+      .feedback-btn {
+        padding: 10px 16px;
+        font-size: 0.8rem;
+      }
+
+      .footer-text {
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (max-height: 700px) {
+      .welcome-image {
+        height: 100px;
+        max-width: 180px;
+      }
+
+      .container {
+        padding: 24px;
+      }
+
+      .menu {
+        gap: 10px;
+      }
+
+      .menu-item {
+        padding: 12px;
+      }
+    }
+
+    @media (max-height: 600px) {
+      .logo {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+      }
+
+      .logo::before {
+        font-size: 24px;
+      }
+
+      .welcome-image {
+        height: 80px;
+        max-width: 140px;
+        margin-bottom: 12px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+        margin-bottom: 4px;
+      }
+
+      .subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+    }
+
+    /* แอนิเมชันเมื่อโหลดหน้า */
+    .container {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .menu-item:nth-child(1) {
+      animation: slideInLeft 0.6s ease-out 0.2s both;
+    }
+
+    .menu-item:nth-child(2) {
+      animation: slideInRight 0.6s ease-out 0.4s both;
+    }
+
+    .feedback-btn {
+      animation: slideInUp 0.6s ease-out 0.6s both;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="version-badge">Demo</div>
+
+    <div class="header-section">
+      <div class="logo"></div>
+      <h1>Welcome To JingJai</h1>
+      <p class="subtitle">ทุกความรู้สึกของคุณมีเราเป็นเพื่อนเสมอ</p>
+    </div>
+
+    <div class="main-section">
+      <img src="Mhee.png" alt="my image" 
+           class="welcome-image">
+
+      <div class="menu">
+        <a href="quiz.html" class="menu-item">
+          <div class="menu-icon">📝</div>
+          <div class="menu-text">แบบทดสอบ</div>
+        </a>
+        <a href="chat.html" class="menu-item">
+          <div class="menu-icon">💬</div>
+          <div class="menu-text">ระบบแชทแบบไม่เปิดเผยตัวตน</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <a href="feedback.html" class="feedback-btn">
+       <!-- <div class="feedback-icon">💭</div> -->
+        <div class="feedback-text">แสดงความคิดเห็น</div>
+      </a>
+
+      <p class="footer-text">
+        ปลอดภัย • ไม่เปิดเผยตัวตน • ไม่มีค่าใช้จ่าย<br>
+        เราอยู่ที่นี่เพื่อรับฟังและช่วยเหลือคุณ
+      </p>
+    </div>
+  </div>
+</body>
+</html>

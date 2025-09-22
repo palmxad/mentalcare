@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1758553340616",
+    "rating": 5,
+    "comment": "รักแฟน รักหมีเนย",
+    "created": "22/09/2568 22:02",
+    "timestamp": "2025-09-22T15:02:20.243Z",
+    "userAgent": "Unknown"
+  },
+  {
+    "id": "1758553377717",
+    "rating": 5,
+    "comment": "แฟนสู้ๆแฟนทำได้",
+    "created": "22/09/2568 22:02",
+    "timestamp": "2025-09-22T15:02:57.337Z",
+    "userAgent": "Unknown"
+  },
+  {
+    "id": "1758553566450",
+    "rating": 3,
+    "comment": "test",
+    "created": "22/09/2568 22:06",
+    "timestamp": "2025-09-22T15:06:05.602Z",
+    "userAgent": "Unknown"
+  },
+  {
+    "id": "1758554843242",
+    "rating": 3,
+    "comment": "ให้3พอนะ ถ้าแฟนบอกรักให้5",
+    "created": "22/09/2568 22:27",
+    "timestamp": "2025-09-22T15:27:22.009Z",
+    "userAgent": "Unknown"
+  }
+]
