@@ -1,200 +1,528 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-  <title>แบบประเมินภาวะซึมเศร้า</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      font-family: 'Prompt', sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #2d3748;
-      padding: 20px;
-    }
-
-    .quiz-container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-
-    .question {
-      margin-bottom: 20px;
-    }
-
-    .question h3 {
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-
-    .options label {
-      display: block;
-      margin: 4px 0;
-      cursor: pointer;
-    }
-
-    .submit-btn {
-      display: block;
-      width: 100%;
-      background: #667eea;
-      color: white;
-      padding: 15px;
-      border: none;
-      font-size: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: background 0.3s;
-    }
-
-    .submit-btn:hover {
-      background: #5a67d8;
-    }
-
-    .result {
-      margin-top: 30px;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 500;
-    }
-
-    .back-btn {
-      margin-top: 20px;
-      display: inline-block;
-      text-align: center;
-      padding: 10px 20px;
-      background: #edf2f7;
-      border-radius: 10px;
-      color: #333;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-
-    .back-btn:hover {
-      background: #e2e8f0;
-    }
-  </style>
-</head>
-<body>
-  <div class="quiz-container">
-    <h1>แบบประเมินอารมณ์</h1>
-    <form id="quizForm"></form>
-    <button type="submit" class="submit-btn" onclick="calculateScore()">ส่งคำตอบ</button>
-    <div id="result" class="result"></div>
-    <a class="back-btn" href="index.html">← กลับหน้าแรก</a>
-  </div>
-
-  <script>
-    const questionTexts = [
-      "รู้สึกเบื่อหน่าย", 
-      "ไม่มีความสุขกับสิ่งที่เคยชอบ",
-      "นอนไม่หลับหรือหลับมากไป",
-      "รู้สึกผิดหรือไร้ค่า",
-      "รู้สึกเหนื่อยง่าย",
-      "รู้สึกไร้ประโยชน์",
-      "ไม่มีสมาธิ",
-      "เคลื่อนไหวช้าลงหรือกระวนกระวาย",
-      "มีความคิดทำร้ายตัวเอง",
-      "วิตกกังวลตลอดเวลา",
-      "รู้สึกตื่นตระหนก",
-      "หายใจเร็วหรือหายใจไม่ออก",
-      "มือสั่น ใจสั่น",
-      "รู้สึกร้อนวูบวาบ เหงื่อออก",
-      "ปวดหัว เจ็บหน้าอก",
-      "รู้สึกสิ้นหวัง",
-      "รู้สึกโดดเดี่ยว",
-      "ไม่อยากคุยกับใคร",
-      "มีปัญหากับคนรอบตัว",
-      "รู้สึกว่าควบคุมชีวิตตัวเองไม่ได้",
-      "กลัวการออกไปข้างนอก",
-      "ระแวงคนอื่น",
-      "โกรธง่าย",
-      "หงุดหงิดบ่อย",
-      "ร้องไห้โดยไม่มีสาเหตุ",
-      "รู้สึกชีวิตไม่มีเป้าหมาย",
-      "นึกถึงความผิดพลาดในอดีตตลอด",
-      "กลัวอนาคต",
-      "ไม่มีแรงบันดาลใจ",
-      "หมดศรัทธาในตัวเอง",
-      "รู้สึกไม่มีใครเข้าใจ",
-      "ไม่อยากกินข้าว หรือกินมากเกินไป",
-      "น้ำหนักลดลงหรือเพิ่มขึ้นผิดปกติ",
-      "ฝันร้ายหรือสะดุ้งกลางคืน",
-      "คิดวนในหัวไม่หยุด",
-      "เจ็บป่วยบ่อย",
-      "เบื่องานหรือการเรียน",
-      "มีพฤติกรรมหลีกเลี่ยงความจริง",
-      "รู้สึกช้า อืดอาด",
-      "อยากหนีไปที่ไหนสักแห่ง",
-      "เปรียบเทียบตัวเองกับคนอื่น",
-      "โทษตัวเองเสมอ",
-      "คิดว่าไม่มีทางออก",
-      "รู้สึกไม่มั่นคงในชีวิต",
-      "ไม่อยากตื่นนอน"
-    ];
-
-    const questions = questionTexts.map((text, i) => ({
-      text: `ข้อที่ ${i + 1}: ${text}`,
-      options: [
-        { text: 'ไม่เลย', score: 0 },
-        { text: 'บางวัน', score: 1 },
-        { text: 'บ่อยครั้ง', score: 2 },
-        { text: 'แทบทุกวัน', score: 3 }
-      ]
-    }));
-
-
-    const quizForm = document.getElementById('quizForm');
-
-    questions.forEach((q, index) => {
-      const qDiv = document.createElement('div');
-      qDiv.className = 'question';
-      qDiv.innerHTML = `<h3>${q.text}</h3>`;
-      const optionsDiv = document.createElement('div');
-      optionsDiv.className = 'options';
-
-      q.options.forEach((opt, i) => {
-        const id = `q${index}_${i}`;
-        optionsDiv.innerHTML += `
-          <label>
-            <input type="radio" name="q${index}" value="${opt.score}" required> ${opt.text}
-          </label>
-        `;
-      });
-
-      qDiv.appendChild(optionsDiv);
-      quizForm.appendChild(qDiv);
-    });
-
-    function calculateScore() {
-      let score = 0;
-      for (let i = 0; i < questions.length; i++) {
-        const radios = document.getElementsByName(`q${i}`);
-        for (const radio of radios) {
-          if (radio.checked) {
-            score += parseInt(radio.value);
+      <!DOCTYPE html>
+      <html lang="th">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>แบบประเมินภาวะซึมเศร้า</title>
+        <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
           }
-        }
-      }
 
-      const result = document.getElementById('result');
-      let level = '';
-      if (score < 10) level = 'ไม่มีแนวโน้มซึมเศร้า';
-      else if (score < 20) level = 'แนวโน้มน้อย';
-      else if (score < 30) level = 'แนวโน้มปานกลาง';
-      else level = 'แนวโน้มสูง ควรปรึกษาผู้เชี่ยวชาญ';
+          body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            line-height: 1.6;
+          }
 
-      result.innerHTML = `คะแนนรวม: ${score} / 135<br>ผลประเมิน: <strong>${level}</strong>`;
-    }
-  </script>
-</body>
-</html>
+          .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 15px;
+          }
+
+          .quiz-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+          }
+
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f7fafc;
+          }
+
+          h1 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+          }
+
+          .subtitle {
+            color: #718096;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: 400;
+          }
+
+          .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin-bottom: 25px;
+            overflow: hidden;
+          }
+
+          .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+          }
+
+          .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+          }
+
+          .question:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          }
+
+          .question h3 {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3748;
+          }
+
+          .options {
+            display: grid;
+            gap: 10px;
+          }
+
+          .options label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-weight: 500;
+          }
+
+          .options label:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+          }
+
+          .options input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            accent-color: #667eea;
+          }
+
+          .options input[type="radio"]:checked + span {
+            color: #667eea;
+            font-weight: 600;
+          }
+
+          .options label:has(input:checked) {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f0f4ff, #e8f2ff);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
+          }
+
+          .submit-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid #f7fafc;
+          }
+
+          .submit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            min-width: 200px;
+          }
+
+          .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+          }
+
+          .submit-btn:active {
+            transform: translateY(0);
+          }
+
+          .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+          }
+
+          .result {
+            margin-top: 25px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          }
+
+          .result h3 {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            margin-bottom: 15px;
+            color: #2d3748;
+          }
+
+          .score-display {
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 15px 0;
+          }
+
+          .level-display {
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-weight: 600;
+            padding: 15px 25px;
+            border-radius: 25px;
+            margin: 15px 0;
+          }
+
+          .level-none { background: #c6f6d5; color: #22543d; }
+          .level-low { background: #fef5e7; color: #c05621; }
+          .level-medium { background: #fed7d7; color: #c53030; }
+          .level-high { background: #fed7d7; color: #c53030; }
+
+          .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e2e8f0;
+            border-radius: 25px;
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+          }
+
+          .back-btn:hover {
+            background: white;
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          }
+
+          .warning-note {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: clamp(0.85rem, 2.3vw, 0.95rem);
+            color: #c53030;
+            text-align: center;
+          }
+
+          /* Mobile optimizations */
+          @media (max-width: 768px) {
+            .container {
+              padding: 10px;
+            }
+
+            .quiz-container {
+              padding: 20px 15px;
+              border-radius: 15px;
+            }
+
+            .question {
+              padding: 15px;
+              margin-bottom: 20px;
+            }
+
+            .options {
+              gap: 8px;
+            }
+
+            .options label {
+              padding: 10px 12px;
+              font-size: 0.9rem;
+            }
+
+            .submit-btn {
+              width: 100%;
+              padding: 15px;
+              margin-top: 20px;
+            }
+
+            .result {
+              padding: 20px 15px;
+            }
+          }
+
+          @media (max-width: 480px) {
+            .quiz-container {
+              margin: 5px;
+              padding: 15px 12px;
+            }
+
+            .question {
+              padding: 12px;
+            }
+
+            .options input[type="radio"] {
+              width: 16px;
+              height: 16px;
+              margin-right: 10px;
+            }
+          }
+
+          /* Animation for form appearance */
+          .question {
+            opacity: 0;
+            animation: slideInUp 0.6s ease forwards;
+          }
+
+          @keyframes slideInUp {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="quiz-container">
+            <div class="header">
+              <h1>แบบประเมินอารมณ์และสุขภาพจิต</h1>
+              <p class="subtitle">กรุณาเลือกคำตอบที่ตรงกับความรู้สึกของคุณในช่วง 2 สัปดาห์ที่ผ่านมา</p>
+            </div>
+
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form id="quizForm"></form>
+
+            <div class="submit-section">
+              <button type="button" class="submit-btn" id="submitBtn" onclick="calculateScore()">
+                ส่งคำตอบและดูผล
+              </button>
+              <div id="result" class="result" style="display: none;"></div>
+              <div class="warning-note">
+                <strong>หมายเหตุ:</strong> แบบประเมินนี้เป็นเพียงเครื่องมือคัดกรองเบื้องต้น หากมีผลคะแนนสูงหรือมีความกังวลเกี่ยวกับสุขภาพจิต ควรปรึกษาผู้เชี่ยวชาญทางการแพทย์
+              </div>
+            </div>
+
+            <div style="text-align: center;">
+              <a class="back-btn" href="index.html">← กลับหน้าแรก</a>
+            </div>
+          </div>
+        </div>
+
+        <script>
+          const questionTexts = [
+            "รู้สึกเบื่อหน่าย", 
+            "ไม่มีความสุขกับสิ่งที่เคยชอบ",
+            "นอนไม่หลับหรือหลับมากไป",
+            "รู้สึกผิดหรือไร้ค่า",
+            "รู้สึกเหนื่อยง่าย",
+            "รู้สึกไร้ประโยชน์",
+            "ไม่มีสมาธิ",
+            "เคลื่อนไหวช้าลงหรือกระวนกระวาย",
+            "มีความคิดทำร้ายตัวเอง",
+            "วิตกกังวลตลอดเวลา",
+            "รู้สึกตื่นตระหนก",
+            "หายใจเร็วหรือหายใจไม่ออก",
+            "มือสั่น ใจสั่น",
+            "รู้สึกร้อนวูบวาบ เหงื่อออก",
+            "ปวดหัว เจ็บหน้าอก",
+            "รู้สึกสิ้นหวัง",
+            "รู้สึกโดดเดี่ยว",
+            "ไม่อยากคุยกับใคร",
+            "มีปัญหากับคนรอบตัว",
+            "รู้สึกว่าควบคุมชีวิตตัวเองไม่ได้",
+            "กลัวการออกไปข้างนอก",
+            "ระแวงคนอื่น",
+            "โกรธง่าย",
+            "หงุดหงิดบ่อย",
+            "ร้องไห้โดยไม่มีสาเหตุ",
+            "รู้สึกชีวิตไม่มีเป้าหมาย",
+            "นึกถึงความผิดพลาดในอดีตตลอด",
+            "กลัวอนาคต",
+            "ไม่มีแรงบันดาลใจ",
+            "หมดศรัทธาในตัวเอง",
+            "รู้สึกไม่มีใครเข้าใจ",
+            "ไม่อยากกินข้าว หรือกินมากเกินไป",
+            "น้ำหนักลดลงหรือเพิ่มขึ้นผิดปกติ",
+            "ฝันร้ายหรือสะดุ้งกลางคืน",
+            "คิดวนในหัวไม่หยุด",
+            "เจ็บป่วยบ่อย",
+            "เบื่องานหรือการเรียน",
+            "มีพฤติกรรมหลีกเลี่ยงความจริง",
+            "รู้สึกช้า อืดอาด",
+            "อยากหนีไปที่ไหนสักแห่ง",
+            "เปรียบเทียบตัวเองกับคนอื่น",
+            "โทษตัวเองเสมอ",
+            "คิดว่าไม่มีทางออก",
+            "รู้สึกไม่มั่นคงในชีวิต",
+            "ไม่อยากตื่นนอน"
+          ];
+
+          const questions = questionTexts.map((text, i) => ({
+            text: `${i + 1}. ${text}`,
+            options: [
+              { text: 'ไม่เลย', score: 0 },
+              { text: 'บางวัน', score: 1 },
+              { text: 'บ่อยครั้ง', score: 2 },
+              { text: 'แทบทุกวัน', score: 3 }
+            ]
+          }));
+
+          const quizForm = document.getElementById('quizForm');
+          const progressFill = document.getElementById('progressFill');
+          let answeredQuestions = 0;
+
+          // สร้างคำถาม
+          questions.forEach((q, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question';
+            qDiv.style.animationDelay = `${index * 0.1}s`;
+
+            const titleH3 = document.createElement('h3');
+            titleH3.textContent = q.text;
+            qDiv.appendChild(titleH3);
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+
+            q.options.forEach((opt, i) => {
+              const label = document.createElement('label');
+              const input = document.createElement('input');
+              const span = document.createElement('span');
+
+              input.type = 'radio';
+              input.name = `q${index}`;
+              input.value = opt.score;
+              input.required = true;
+              input.addEventListener('change', updateProgress);
+
+              span.textContent = opt.text;
+
+              label.appendChild(input);
+              label.appendChild(span);
+              optionsDiv.appendChild(label);
+            });
+
+            qDiv.appendChild(optionsDiv);
+            quizForm.appendChild(qDiv);
+          });
+
+          function updateProgress() {
+            const formData = new FormData(document.getElementById('quizForm'));
+            answeredQuestions = Array.from(formData.keys()).length;
+            const progress = (answeredQuestions / questions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+
+            // เปิดใช้งานปุ่มส่งเมื่อตอบครบทุกข้อ
+            const submitBtn = document.getElementById('submitBtn');
+            if (answeredQuestions === questions.length) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'ส่งคำตอบและดูผล ✓';
+            } else {
+              submitBtn.disabled = true;
+              submitBtn.textContent = `ตอบแล้ว ${answeredQuestions}/${questions.length} ข้อ`;
+            }
+          }
+
+          function calculateScore() {
+            let score = 0;
+            let allAnswered = true;
+
+            for (let i = 0; i < questions.length; i++) {
+              const radios = document.getElementsByName(`q${i}`);
+              let answered = false;
+              for (const radio of radios) {
+                if (radio.checked) {
+                  score += parseInt(radio.value);
+                  answered = true;
+                  break;
+                }
+              }
+              if (!answered) {
+                allAnswered = false;
+              }
+            }
+
+            if (!allAnswered) {
+              alert('กรุณาตอบคำถามให้ครบทุกข้อ');
+              return;
+            }
+
+            const result = document.getElementById('result');
+            let level = '';
+            let levelClass = '';
+            let description = '';
+
+            if (score < 23) {
+              level = 'ไม่มีแนวโน้มซึมเศร้า';
+              levelClass = 'level-none';
+              description = 'ผลการประเมินของคุณอยู่ในเกณฑ์ปกติ คุณมีสุขภาพจิทที่ดี';
+            } else if (score < 45) {
+              level = 'มีแนวโน้มซึมเศร้าระดับน้อย';
+              levelClass = 'level-low';
+              description = 'คุณอาจมีอาการเศร้าเล็กน้อย ควรพักผ่อนและดูแลตัวเอง';
+            } else if (score < 68) {
+              level = 'มีแนวโน้มซึมเศร้าระดับปานกลาง';
+              levelClass = 'level-medium';
+              description = 'คุณมีอาการที่ควรให้ความสนใจ แนะนำให้ปรึกษาผู้เชี่ยวชาญ';
+            } else {
+              level = 'มีแนวโน้มซึมเศร้าระดับสูง';
+              levelClass = 'level-high';
+              description = 'คุณควรปรึกษาแพทย์หรือผู้เชี่ยวชาญทางจิตเวชโดยเร็ว';
+            }
+
+            result.innerHTML = `
+              <h3>ผลการประเมิน</h3>
+              <div class="score-display">${score}</div>
+              <div style="color: #718096; margin-bottom: 15px;">จากคะแนนเต็ม 135 คะแนน</div>
+              <div class="level-display ${levelClass}">${level}</div>
+              <p style="color: #4a5568; margin-top: 15px; line-height: 1.6;">${description}</p>
+            `;
+
+            result.style.display = 'block';
+            result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+
+          // เริ่มต้นด้วยปุ่มปิดใช้งาน
+          document.getElementById('submitBtn').disabled = true;
+          document.getElementById('submitBtn').textContent = 'ตอบแล้ว 0/45 ข้อ';
+        </script>
+      </body>
+      </html>
