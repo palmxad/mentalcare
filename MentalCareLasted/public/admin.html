@@ -1,0 +1,128 @@
+        <!DOCTYPE html>
+        <html lang="th">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>สถิติ Feedback - JingJai Admin</title>
+            <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+            <style>
+                /* CSS คล้ายๆ feedback.html แต่เน้นการแสดงข้อมูล */
+                body {
+                    font-family: 'Prompt', sans-serif;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    min-height: 100vh;
+                    padding: 20px;
+                }
+
+                .admin-container {
+                    max-width: 1000px;
+                    margin: 0 auto;
+                    background: rgba(255, 255, 255, 0.95);
+                    backdrop-filter: blur(20px);
+                    border-radius: 24px;
+                    padding: 40px;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                }
+
+                .stats-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 20px;
+                    margin-bottom: 40px;
+                }
+
+                .stat-card {
+                    background: white;
+                    padding: 24px;
+                    border-radius: 16px;
+                    text-align: center;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                }
+
+                .feedback-list {
+                    max-height: 500px;
+                    overflow-y: auto;
+                }
+
+                .feedback-item {
+                    background: white;
+                    margin-bottom: 16px;
+                    padding: 20px;
+                    border-radius: 12px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                .stars-display {
+                    color: #fbbf24;
+                    font-size: 1.2rem;
+                    margin-bottom: 8px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="admin-container">
+                <h1>สถิติ Feedback</h1>
+
+                <div class="stats-grid" id="statsGrid">
+                    <!-- สถิติจะถูกโหลดด้วย JavaScript -->
+                </div>
+
+                <div class="feedback-list" id="feedbackList">
+                    <!-- รายการ feedback จะถูกโหลดด้วย JavaScript -->
+                </div>
+            </div>
+
+            <script>
+                async function loadFeedbackData() {
+                    try {
+                        const response = await fetch('/api/feedback');
+                        const data = await response.json();
+
+                        displayStats(data.stats);
+                        displayFeedbacks(data.feedbacks);
+                    } catch (error) {
+                        console.error('Error loading feedback:', error);
+                    }
+                }
+
+                function displayStats(stats) {
+                    const statsGrid = document.getElementById('statsGrid');
+                    statsGrid.innerHTML = `
+                        <div class="stat-card">
+                            <h3>จำนวนรีวิวทั้งหมด</h3>
+                            <div style="font-size: 2rem; font-weight: 600; color: #667eea;">${stats.total}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>คะแนนเฉลี่ย</h3>
+                            <div style="font-size: 2rem; font-weight: 600; color: #fbbf24;">${stats.averageRating}/5</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>คะแนนดาว</h3>
+                            ${Object.entries(stats.ratingDistribution).map(([rating, count]) => 
+                                `<div>${rating}⭐: ${count} คน</div>`
+                            ).join('')}
+                        </div>
+                    `;
+                }
+
+                function displayFeedbacks(feedbacks) {
+                    const feedbackList = document.getElementById('feedbackList');
+                    feedbackList.innerHTML = feedbacks.reverse().map(feedback => `
+                        <div class="feedback-item">
+                            <div class="stars-display">${'⭐'.repeat(feedback.rating)}</div>
+                            <div style="color: #64748b; font-size: 0.9rem; margin-bottom: 8px;">
+                                ${feedback.created}
+                            </div>
+                            ${feedback.comment ? `<div style="color: #2d3748;">"${feedback.comment}"</div>` : '<div style="color: #a0aec0; font-style: italic;">ไม่มีความคิดเห็นเพิ่มเติม</div>'}
+                        </div>
+                    `).join('');
+                }
+
+                // โหลดข้อมูลเมื่อหน้าเว็บโหลดเสร็จ
+                loadFeedbackData();
+
+                // Refresh ทุก 30 วินาที
+                setInterval(loadFeedbackData, 30000);
+            </script>
+        </body>
+        </html>
